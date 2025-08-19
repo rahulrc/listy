@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/routes/api/**/*.ts": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": ".svelte-kit/output/client",
+  "framework": "sveltekit"
+}
