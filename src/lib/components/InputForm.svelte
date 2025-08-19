@@ -94,36 +94,32 @@
 			/>
 		</div>
 		
-		<!-- Dates Input -->
-		<div class="fade-in">
-			<label class="block text-white text-lg font-semibold mb-3 font-quicksand">
-				📅 When are you traveling?
+		<!-- Dates Section -->
+		<div class="space-y-3">
+			<label for="startDate" class="block text-white/80 font-quicksand">
+				📅 When are you leaving?
 			</label>
-			<div class="grid grid-cols-2 gap-3">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 				<div>
-					<label for="startDate" class="block text-white text-sm mb-2 font-quicksand">
-						Start Date
-					</label>
 					<input
-						id="startDate"
 						type="date"
+						id="startDate"
 						bind:value={startDate}
-						min={new Date().toISOString().split('T')[0]}
-						class="w-full px-3 py-2 rounded-lg border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all duration-300 font-quicksand"
+						class="w-full p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:border-white/60 focus:bg-white/20 transition-all duration-300 font-quicksand"
 						disabled={isLoading}
 					/>
 				</div>
 				<div>
-					<label for="numberOfDays" class="block text-white text-sm mb-2 font-quicksand">
-						Number of Days
+					<label for="numberOfDays" class="block text-white/80 font-quicksand text-sm mb-1">
+						Number of days:
 					</label>
 					<input
-						id="numberOfDays"
 						type="number"
+						id="numberOfDays"
 						bind:value={numberOfDays}
 						min="1"
 						max="30"
-						class="w-full px-3 py-2 rounded-lg border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all duration-300 font-quicksand"
+						class="w-full p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:border-white/60 focus:bg-white/20 transition-all duration-300 font-quicksand"
 						disabled={isLoading}
 					/>
 				</div>
@@ -157,8 +153,9 @@
 					on:click={() => togglePurpose('beach')}
 					disabled={isLoading}
 				>
-					🏖️ Beach Trip
+					🏖️ Beach
 				</button>
+				
 				<button
 					type="button"
 					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('outdoorsy') ? 'border-white/60 bg-white/20' : ''}"
@@ -167,6 +164,7 @@
 				>
 					🏔️ Outdoorsy
 				</button>
+				
 				<button
 					type="button"
 					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('business') ? 'border-white/60 bg-white/20' : ''}"
@@ -175,6 +173,7 @@
 				>
 					💼 Business
 				</button>
+				
 				<button
 					type="button"
 					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('culture') ? 'border-white/60 bg-white/20' : ''}"
@@ -199,32 +198,14 @@
 					on:click={() => togglePurpose('family')}
 					disabled={isLoading}
 				>
-					👨‍👩‍👧‍👦 Visiting Friends/Family
-				</button>
-				
-				<button
-					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('event') ? 'border-white/60 bg-white/20' : ''}"
-					on:click={() => togglePurpose('event')}
-					disabled={isLoading}
-				>
-					🎉 Special Event
-				</button>
-				
-				<button
-					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('wellness') ? 'border-white/60 bg-white/20' : ''}"
-					on:click={() => togglePurpose('wellness')}
-					disabled={isLoading}
-				>
-					🧘 Wellness Retreat
+					👨‍👩‍👧‍👦 Friends/Family
 				</button>
 			</div>
 			
 			<!-- Trip Purpose Free Text Input -->
 			<div class="mt-3">
 				<label for="customPurpose" class="block text-white/80 font-quicksand mb-2">
-					Additional trip details or specific purpose:
+					Other purpose:
 				</label>
 				<input
 					type="text"
