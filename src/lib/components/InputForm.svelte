@@ -105,7 +105,7 @@
 						type="date"
 						id="startDate"
 						bind:value={startDate}
-						class="w-full p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:border-white/60 focus:bg-white/20 transition-all duration-300 font-quicksand"
+						class="w-full max-w-xs md:max-w-none p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:border-white/60 focus:bg-white/20 transition-all duration-300 font-quicksand"
 						disabled={isLoading}
 					/>
 				</div>
@@ -119,7 +119,7 @@
 						bind:value={numberOfDays}
 						min="1"
 						max="30"
-						class="w-full p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:border-white/60 focus:bg-white/20 transition-all duration-300 font-quicksand"
+						class="w-full max-w-xs md:max-w-none p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white focus:border-white/60 focus:bg-white/20 transition-all duration-300 font-quicksand"
 						disabled={isLoading}
 					/>
 				</div>
