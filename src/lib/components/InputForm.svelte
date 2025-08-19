@@ -12,18 +12,63 @@
 	let additionalDetails = '';
 	let isLoading = false;
 	
-	onMount(() => {
-		// Set default start date to tomorrow
-		const tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
-		startDate = tomorrow.toISOString().split('T')[0];
-	});
-
 	function togglePurpose(purpose: string) {
 		if (tripPurpose.includes(purpose)) {
 			tripPurpose = tripPurpose.filter(p => p !== purpose);
 		} else {
 			tripPurpose = [...tripPurpose, purpose];
+		}
+	}
+
+	// Audio for button click
+	let audioContext: AudioContext | null = null;
+	let clickSound: AudioBuffer | null = null;
+
+	onMount(() => {
+		// Set default start date to tomorrow
+		const tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		startDate = tomorrow.toISOString().split('T')[0];
+
+		// Initialize audio context for sound effects
+		try {
+			audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+			createClickSound();
+		} catch (error) {
+			console.log('Audio not supported:', error);
+		}
+	});
+
+	function createClickSound() {
+		if (!audioContext) return;
+		
+		// Create a fun, happy sound (chime-like)
+		const sampleRate = audioContext.sampleRate;
+		const duration = 0.3;
+		const frameCount = sampleRate * duration;
+		
+		const audioBuffer = audioContext.createBuffer(1, frameCount, sampleRate);
+		const channelData = audioBuffer.getChannelData(0);
+		
+		for (let i = 0; i < frameCount; i++) {
+			const t = i / sampleRate;
+			const frequency = 800 + 400 * Math.sin(t * 10); // Oscillating frequency
+			channelData[i] = Math.sin(2 * Math.PI * frequency * t) * Math.exp(-t * 3) * 0.3;
+		}
+		
+		clickSound = audioBuffer;
+	}
+
+	function playClickSound() {
+		if (audioContext && clickSound) {
+			try {
+				const source = audioContext.createBufferSource();
+				source.buffer = clickSound;
+				source.connect(audioContext.destination);
+				source.start();
+			} catch (error) {
+				console.log('Could not play sound:', error);
+			}
 		}
 	}
 	
@@ -238,6 +283,7 @@
 			type="submit"
 			class="w-full bg-gradient-to-r from-coral to-turquoise hover:from-coral/90 hover:to-turquoise/90 text-white font-bold py-4 px-6 rounded-xl text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 font-quicksand disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 			disabled={!destination.trim() || isLoading}
+			on:click={playClickSound}
 		>
 			{isLoading ? '⏳ Creating...' : '🎒 Create My Lists!'}
 		</button>

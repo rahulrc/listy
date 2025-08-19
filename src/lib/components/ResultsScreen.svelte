@@ -1,11 +1,20 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { onMount } from 'svelte';
 	
 	const dispatch = createEventDispatcher();
 	
 	export let results: any;
 	
 	let activeTab = 0;
+	let showCelebration = false;
+
+	onMount(() => {
+		// Trigger celebration animation when results are displayed
+		setTimeout(() => {
+			showCelebration = true;
+		}, 100);
+	});
 	
 	// Debug logging
 	$: console.log('ResultsScreen received results:', results);
@@ -38,6 +47,39 @@
 
 <div class="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
 	<div class="container mx-auto px-4 py-8">
+		<!-- Celebration Animation -->
+		{#if showCelebration}
+			<div class="celebration-container fixed inset-0 pointer-events-none z-50">
+				<!-- Confetti -->
+				{#each Array(50) as _, i}
+					<div 
+						class="confetti absolute w-2 h-2 rounded-full"
+						style="
+							left: {Math.random() * 100}%;
+							animation-delay: {Math.random() * 2}s;
+							animation-duration: {3 + Math.random() * 2}s;
+							background-color: {['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD'][Math.floor(Math.random() * 6)]};
+						"
+					></div>
+				{/each}
+				
+				<!-- Sparkles -->
+				{#each Array(20) as _, i}
+					<div 
+						class="sparkle absolute text-2xl"
+						style="
+							left: {Math.random() * 100}%;
+							top: {Math.random() * 100}%;
+							animation-delay: {Math.random() * 1}s;
+							animation-duration: {2 + Math.random() * 1}s;
+						"
+					>
+						{['✨', '⭐', '💫', '🌟', '💎'][Math.floor(Math.random() * 5)]}
+					</div>
+				{/each}
+			</div>
+		{/if}
+
 		<!-- Header -->
 		<div class="text-center mb-8">
 			<h1 class="text-4xl font-bold text-white mb-4 font-nunito">
