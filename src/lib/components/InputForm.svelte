@@ -62,6 +62,11 @@
 	function playClickSound() {
 		if (audioContext && clickSound) {
 			try {
+				// Resume audio context if it's suspended (browser autoplay policy)
+				if (audioContext.state === 'suspended') {
+					audioContext.resume();
+				}
+				
 				const source = audioContext.createBufferSource();
 				source.buffer = clickSound;
 				source.connect(audioContext.destination);
@@ -76,16 +81,19 @@
 		if (!destination.trim()) {
 			return;
 		}
-		
+
+		// Play the click sound
+		playClickSound();
+
 		// Format dates for display
 		const start = new Date(startDate);
 		const end = new Date(start);
 		end.setDate(start.getDate() + numberOfDays - 1);
-		
-		const dateRange = numberOfDays === 1 
+
+		const dateRange = numberOfDays === 1
 			? start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 			: `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-		
+
 		const formData = {
 			destination: destination.trim(),
 			dates: dateRange,
@@ -93,18 +101,18 @@
 			numberOfDays: numberOfDays,
 			travelers: travelers.trim() || null,
 			tripPurpose: tripPurpose.length > 0 ? tripPurpose : null,
-			additionalDetails: additionalDetails.trim() || null
+			additionalDetails: customPurpose.trim() || null
 		};
-		
+
 		isLoading = true;
-		
+
 		try {
 			const response = await fetch('/api/generate-list', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(formData)
 			});
-			
+
 			if (response.ok) {
 				const results = await response.json();
 				dispatch('success', results);
@@ -283,7 +291,6 @@
 			type="submit"
 			class="w-full bg-gradient-to-r from-coral to-turquoise hover:from-coral/90 hover:to-turquoise/90 text-white font-bold py-4 px-6 rounded-xl text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 font-quicksand disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 			disabled={!destination.trim() || isLoading}
-			on:click={playClickSound}
 		>
 			{isLoading ? '⏳ Creating...' : '🎒 Create My Lists!'}
 		</button>

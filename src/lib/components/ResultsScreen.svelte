@@ -13,7 +13,7 @@
 		// Trigger celebration animation when results are displayed
 		setTimeout(() => {
 			showCelebration = true;
-		}, 100);
+		}, 500); // Increased delay to ensure component is fully rendered
 	});
 	
 	// Debug logging
