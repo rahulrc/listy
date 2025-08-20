@@ -40,73 +40,106 @@
 	$: console.log('safeResults computed:', safeResults);
 	$: console.log('Current traveler in safeResults:', safeResults.travelers?.[activeTab]);
 	
-	function resetToInput() {
-		dispatch('reset');
-	}
+			function resetToInput() {
+			dispatch('reset');
+		}
 
-	// Share functionality
-	function sharePackingList() {
-		const currentTraveler = results?.travelers?.[activeTab];
-		if (!currentTraveler) return;
+		// Helper function to get proper traveler display name
+		function getTravelerDisplayName(providedName: string | undefined, index: number): string {
+			if (!providedName || providedName.toLowerCase() === 'me') {
+				return 'My';
+			}
+			return providedName;
+		}
 
-		// Create shareable content
-		const shareData = {
-			title: `${currentTraveler.provided_name}'s Packing List`,
-			text: `Packing list for ${currentTraveler.provided_name}: ${results?.trip_summary || 'Trip'}`,
-			url: window.location.href
-		};
+				// Share functionality
+		function sharePackingList() {
+			const currentTraveler = results?.travelers?.[activeTab];
+			if (!currentTraveler) return;
 
-		// Use Web Share API if available
-		if (navigator.share && navigator.canShare(shareData)) {
-			navigator.share(shareData)
+			// Create rich packing list content
+			const richContent = createRichPackingListContent(currentTraveler);
+			
+			// Try to share as rich text first (for apps that support it)
+			if (navigator.share && navigator.canShare({ text: richContent })) {
+				navigator.share({
+					title: `${getTravelerDisplayName(currentTraveler.provided_name, activeTab)} Packing List`,
+					text: richContent
+				})
 				.then(() => console.log('Shared successfully'))
 				.catch((error) => console.log('Error sharing:', error));
-		} else {
-			// Fallback: copy to clipboard
-			const listText = formatPackingListForSharing(currentTraveler);
-			navigator.clipboard.writeText(listText)
-				.then(() => {
-					// Show success message
-					alert('Packing list copied to clipboard!');
-				})
-				.catch(() => {
-					// Fallback for older browsers
-					const textArea = document.createElement('textarea');
-					textArea.value = listText;
-					document.body.appendChild(textArea);
-					textArea.select();
-					document.execCommand('copy');
-					document.body.removeChild(textArea);
-					alert('Packing list copied to clipboard!');
-				});
-		}
-	}
-
-	function formatPackingListForSharing(traveler: any) {
-		let text = `${traveler.provided_name}'s Packing List\n`;
-		text += `${results?.trip_summary || 'Trip'}\n`;
-		text += `${results?.location_details?.city || 'Unknown'}, ${results?.location_details?.state || 'Unknown'}, ${results?.location_details?.country || 'Unknown'}\n`;
-		text += `Weather: ${results?.weather_forecast?.conditions || 'Unknown'}, ${results?.weather_forecast?.high_temp_celsius || 'N/A'}°C / ${results?.weather_forecast?.low_temp_celsius || 'N/A'}°C\n\n`;
-
-		if (traveler.packing_list?.packing_list) {
-			Object.entries(traveler.packing_list.packing_list).forEach(([category, items]) => {
-				if (Array.isArray(items) && items.length > 0) {
-					text += `${category.charAt(0).toUpperCase() + category.slice(1)}:\n`;
-					items.forEach((item: string) => {
-						text += `☐ ${item}\n`;
+			} else {
+				// Fallback: copy rich content to clipboard
+				navigator.clipboard.writeText(richContent)
+					.then(() => {
+						// Show success message
+						alert('Rich packing list copied to clipboard!');
+					})
+					.catch(() => {
+						// Fallback for older browsers
+						const textArea = document.createElement('textarea');
+						textArea.value = richContent;
+						document.body.appendChild(textArea);
+						textArea.select();
+						document.execCommand('copy');
+						document.body.removeChild(textArea);
+						alert('Rich packing list copied to clipboard!');
 					});
-					text += '\n';
-				}
-			});
+			}
 		}
 
-		if (traveler.packing_list?.packing_tips) {
-			text += `Packing Tips:\n${traveler.packing_list.packing_tips}\n\n`;
+			function createRichPackingListContent(traveler: any) {
+			const displayName = getTravelerDisplayName(traveler.provided_name, activeTab);
+			let content = `${displayName} Packing List\n`;
+			content += `${results?.trip_summary || 'Trip'}\n`;
+			content += `${results?.location_details?.city || 'Unknown'}, ${results?.location_details?.state || 'Unknown'}, ${results?.location_details?.country || 'Unknown'}\n`;
+			content += `Weather: ${results?.weather_forecast?.conditions || 'Unknown'}, ${results?.weather_forecast?.high_temp_celsius || 'N/A'}°C / ${results?.weather_forecast?.low_temp_celsius || 'N/A'}°C\n\n`;
+
+			if (traveler.packing_list?.packing_list) {
+				Object.entries(traveler.packing_list.packing_list).forEach(([category, items]) => {
+					if (Array.isArray(items) && items.length > 0) {
+						content += `${category.charAt(0).toUpperCase() + category.slice(1)}:\n`;
+						items.forEach((item: string) => {
+							content += `☐ ${item}\n`;
+						});
+						content += '\n';
+					}
+				});
+			}
+
+			if (traveler.packing_list?.packing_tips) {
+				content += `Packing Tips:\n${traveler.packing_list.packing_tips}\n\n`;
+			}
+
+			content += `Generated by Listy - AI-Powered Packing List Generator`;
+			return content;
 		}
 
-		text += `Generated by Listy - AI-Powered Packing List Generator`;
-		return text;
-	}
+		function formatPackingListForSharing(traveler: any) {
+			let text = `${traveler.provided_name}'s Packing List\n`;
+			text += `${results?.trip_summary || 'Trip'}\n`;
+			text += `${results?.location_details?.city || 'Unknown'}, ${results?.location_details?.state || 'Unknown'}, ${results?.location_details?.country || 'Unknown'}\n`;
+			text += `Weather: ${results?.weather_forecast?.conditions || 'Unknown'}, ${results?.weather_forecast?.high_temp_celsius || 'N/A'}°C / ${results?.weather_forecast?.low_temp_celsius || 'N/A'}°C\n\n`;
+
+			if (traveler.packing_list?.packing_list) {
+				Object.entries(traveler.packing_list.packing_list).forEach(([category, items]) => {
+					if (Array.isArray(items) && items.length > 0) {
+						text += `${category.charAt(0).toUpperCase() + category.slice(1)}:\n`;
+						items.forEach((item: string) => {
+							text += `☐ ${item}\n`;
+						});
+						text += '\n';
+					}
+				});
+			}
+
+			if (traveler.packing_list?.packing_tips) {
+				text += `Packing Tips:\n${traveler.packing_list.packing_tips}\n\n`;
+			}
+
+			text += `Generated by Listy - AI-Powered Packing List Generator`;
+			return text;
+		}
 </script>
 
 <div class="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
@@ -201,11 +234,11 @@
 		
 		<!-- Packing List / Personalized Prompt -->
 		<div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-			<div class="text-center mb-6">
-				<h2 class="text-2xl font-bold text-white mb-2 font-nunito">
-					{results?.travelers?.[activeTab]?.provided_name || `Traveler ${activeTab + 1}`}'s Packing List
-				</h2>
-			</div>
+					<div class="text-center mb-6">
+			<h2 class="text-2xl font-bold text-white mb-2 font-nunito">
+				{getTravelerDisplayName(results?.travelers?.[activeTab]?.provided_name, activeTab)}'s Packing List
+			</h2>
+		</div>
 			
 			<!-- Packing List -->
 			{#if results?.travelers?.[activeTab]?.packing_list}
@@ -255,9 +288,9 @@
 							<span>📤</span>
 							<span>Share Packing List</span>
 						</button>
-						<p class="text-white/60 text-sm mt-2 font-quicksand">
-							Share {results?.travelers?.[activeTab]?.provided_name || 'this traveler'}'s list
-						</p>
+													<p class="text-white/60 text-sm mt-2 font-quicksand">
+								Share {getTravelerDisplayName(results?.travelers?.[activeTab]?.provided_name, activeTab)} list
+							</p>
 					</div>
 				</div>
 			{:else}

@@ -70,7 +70,7 @@ export const POST = async ({ request }: { request: Request }) => {
 			};
 		}
 
-		let travelerNames = ['You'];
+		let travelerNames = ['me'];
 		if (travelers && travelers.trim()) {
 			// Split by common separators and clean up
 			const rawNames = travelers.split(/[,&]| and | \+ /).map((name: string) => name.trim()).filter((name: string) => name);
@@ -85,7 +85,7 @@ export const POST = async ({ request }: { request: Request }) => {
 		// Use OpenAI to analyze travelers and create personalized prompts
 		const mockTravelers = await Promise.all(travelerNames.map(async (displayName, index) => {
 			// Get the original raw name for better inference
-			const originalNames = travelers ? travelers.split(/[,&]| and | \+ /).map((name: string) => name.trim()).filter((name: string) => name) : ['You'];
+			const originalNames = travelers ? travelers.split(/[,&]| and | \+ /).map((name: string) => name.trim()).filter((name: string) => name) : ['me'];
 			const originalName = originalNames[index] || displayName;
 			
 			// Step 1: Generate personalized prompt
