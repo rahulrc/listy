@@ -215,14 +215,14 @@
 						{#each Object.entries(results.travelers[activeTab].packing_list.packing_list) as [category, items]}
 							{#if Array.isArray(items) && items.length > 0}
 								<div class="bg-white/5 rounded-lg p-4">
-									<h3 class="text-lg font-semibold text-white mb-3 font-nunito capitalize">
-										{category === 'clothing' ? '👕' : 
-										 category === 'toiletries' ? '🧴' :
-										 category === 'electronics' ? '📱' :
-										 category === 'documents' ? '📄' :
-										 category === 'accessories' ? '👜' :
-										 category === 'special_items' ? '⭐ Special Items' : '📦'} {category === 'special_items' ? 'Special Items' : category}
-									</h3>
+																	<h3 class="text-lg font-semibold text-white mb-3 font-nunito capitalize">
+									{category === 'clothing' ? '👕' : 
+									 category === 'toiletries' ? '🧴' :
+									 category === 'electronics' ? '📱' :
+									 category === 'documents' ? '📄' :
+									 category === 'accessories' ? '👜' :
+									 category === 'special_items' ? '⭐ Special Items' : '📦'} {category === 'special_items' ? '' : category}
+								</h3>
 									<div class="space-y-2">
 										{#each items as item}
 											<div class="flex items-center space-x-3">

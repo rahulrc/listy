@@ -202,7 +202,7 @@
 			<div class="grid grid-cols-2 gap-3">
 				<button
 					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('beach') ? 'border-white/60 bg-white/20' : ''}"
+					class="p-3 rounded-xl border-2 transition-all duration-300 font-quicksand {tripPurpose.includes('beach') ? 'border-purple-400 bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' : 'border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/40'}"
 					on:click={() => togglePurpose('beach')}
 					disabled={isLoading}
 				>
@@ -211,7 +211,7 @@
 				
 				<button
 					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('outdoorsy') ? 'border-white/60 bg-white/20' : ''}"
+					class="p-3 rounded-xl border-2 transition-all duration-300 font-quicksand {tripPurpose.includes('outdoorsy') ? 'border-purple-400 bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' : 'border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/40'}"
 					on:click={() => togglePurpose('outdoorsy')}
 					disabled={isLoading}
 				>
@@ -220,7 +220,7 @@
 				
 				<button
 					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('business') ? 'border-white/60 bg-white/20' : ''}"
+					class="p-3 rounded-xl border-2 transition-all duration-300 font-quicksand {tripPurpose.includes('business') ? 'border-purple-400 bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' : 'border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/40'}"
 					on:click={() => togglePurpose('business')}
 					disabled={isLoading}
 				>
@@ -229,7 +229,7 @@
 				
 				<button
 					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('culture') ? 'border-white/60 bg-white/20' : ''}"
+					class="p-3 rounded-xl border-2 transition-all duration-300 font-quicksand {tripPurpose.includes('culture') ? 'border-purple-400 bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' : 'border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/40'}"
 					on:click={() => togglePurpose('culture')}
 					disabled={isLoading}
 				>
@@ -238,7 +238,7 @@
 				
 				<button
 					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('romantic') ? 'border-white/60 bg-white/20' : ''}"
+					class="p-3 rounded-xl border-2 transition-all duration-300 font-quicksand {tripPurpose.includes('romantic') ? 'border-purple-400 bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' : 'border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/40'}"
 					on:click={() => togglePurpose('romantic')}
 					disabled={isLoading}
 				>
@@ -247,7 +247,7 @@
 				
 				<button
 					type="button"
-					class="p-3 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 font-quicksand {tripPurpose.includes('family') ? 'border-white/60 bg-white/20' : ''}"
+					class="p-3 rounded-xl border-2 transition-all duration-300 font-quicksand {tripPurpose.includes('family') ? 'border-purple-400 bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg transform scale-105' : 'border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/40'}"
 					on:click={() => togglePurpose('family')}
 					disabled={isLoading}
 				>
